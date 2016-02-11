@@ -1,2 +1,2 @@
 # EE461L
-EE461L Repository Used to Collaborate on Homeworks
+EE461L Repository used to Collaborate on Homeworks
