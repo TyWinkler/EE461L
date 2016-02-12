@@ -17,23 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BlogSubmit_Servlet extends HttpServlet {
-	
-	UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    String userName;
-    
-    
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Key userKey = KeyFactory.createKey("User", userName);
-        
-        
+    	UserService userService = UserServiceFactory.getUserService();
+        User user = userService.getCurrentUser();
+    	String userName = req.getParameter("userName");
         if(user != null){
-        	
-        	userName = req.getParameter("userName");
+        	Key userKey = KeyFactory.createKey("User", userName);
 	        String content = req.getParameter("content");
-	        
 	        Date date = new Date();
-	        
 	        Entity posts = new Entity("Post", userKey);
 	        posts.setProperty("user", user);
 	        posts.setProperty("date", date);
@@ -43,9 +34,4 @@ public class BlogSubmit_Servlet extends HttpServlet {
         }
         resp.sendRedirect("/home.jsp?userName=" + userName);
     }
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		
-    	resp.sendRedirect("/home.jsp?userName=" + userName);
-	}
 }
