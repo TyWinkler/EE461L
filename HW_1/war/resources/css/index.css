@@ -1,0 +1,29 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #A1A1A1;
+}
+
+ul.border {
+	border-bottom: 2px solid #A54B00;
+}
+
+li {
+	display: block;
+    color: black;
+    font-style: bold;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float: left;
+}
+
+li a {
+    display: block;
+    font-style: normal; 
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
