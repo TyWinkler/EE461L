@@ -12,6 +12,9 @@
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
+
+
 <html>
   <head>
   	<link rel="stylesheet" href="resources/css/index.css">
@@ -27,8 +30,8 @@
     %>
     
   <ul class="border">
-		<li class="topbar"><a>Home</a></li>
-		<li class="topbar"><a href="Posts">Posts</a></li>
+		<li class="topbar"><a href="sign">Home</a></li>
+		<li class="topbar"><a>Posts</a></li>
 		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
@@ -56,7 +59,7 @@
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Key userKey = KeyFactory.createKey("User", userName);
 	    Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
-	    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
+	    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(200));
 	    if (posts.isEmpty()) {
 	        %>
 	        <p>Blog '${fn:escapeXml(userName)}' has no messages.</p>
