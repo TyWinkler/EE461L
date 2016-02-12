@@ -27,10 +27,10 @@
     %>
     
   <ul class="border">
-		<li><a href="hw_1" class="active">Home</a></li>
-		<li><a href="Posts">Posts</a></li>
+		<li class="topbar"><a href="hw_1" class="active">Home</a></li>
+		<li class="topbar"><a href="Posts">Posts</a></li>
 		<ul style="float:right; list-style-type:none;">
-			<li>
+			<li class="topbar">
 				<%
 				if (user != null) {
 					pageContext.setAttribute("user", user);
@@ -52,8 +52,6 @@
 		<%
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Key userKey = KeyFactory.createKey("User", userName);
-	    // Run an ancestor query to ensure we see the most up-to-date
-	    // view of the Greetings belonging to the selected Guestbook.
 	    Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
 	    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
 	    if (posts.isEmpty()) {
@@ -65,22 +63,15 @@
 	        <%
 	        for (Entity post : posts) {
 	            pageContext.setAttribute("post_content", post.getProperty("content"));
-	            if (post.getProperty("user") == null) {
-	                %>
-	                <p>An anonymous person wrote:</p>
-	                <%
-	            } else {
-	                pageContext.setAttribute("post_user", post.getProperty("user"));
-	                %>
-	                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
-	                <%
-	            }
-	            %>
+                pageContext.setAttribute("post_user", post.getProperty("user"));
+                %>
+                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
 	            <blockquote>${fn:escapeXml(post_content)}</blockquote>
 	            <%
 	        }
 	    }
 	%>
+		<p>Your Message:</p>
 	    <form action="/sign" method="post">
 	      <div><textarea name="content" rows="3" cols="60"></textarea></div>
 	      <div><input type="submit" value="Post" /></div>
