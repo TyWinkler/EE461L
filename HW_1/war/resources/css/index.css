@@ -1,3 +1,8 @@
+body {
+	margin: 0;
+	background-size: 100% auto;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -7,7 +12,7 @@ ul {
 }
 
 ul.border {
-	border-bottom: 2px solid #A54B00;
+	border-bottom: 2px solid #D6D6D6;
 }
 
 li {
@@ -26,4 +31,13 @@ li a {
     color: white;
     text-align: center;
     text-decoration: none;
+}
+
+#page-wrap {
+    padding-top: 20px;
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-bottom: 300px;
+    width: 1200px;
+    margin: 0 auto;
 }
