@@ -24,11 +24,29 @@
     pageContext.setAttribute("userName", userName);
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
+    
+    boolean subscribe = false;
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Key userKey = KeyFactory.createKey("User", userName);
     %>
     
   <ul class="border">
 		<li class="topbar"><a href="home.jsp">Home</a></li>
 		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>
+		
+		<%
+		if(subscribe == false) {
+			%>
+			<li class="topbar"><a>Subscribe</a></li>
+			<%
+		}
+		else {
+			%>
+			<li class="topbar"><a>UnSubscribe</a></li>
+			<%
+		}
+		%>
 		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
@@ -53,8 +71,6 @@
 	  	<h1>Title!!!</h1>
 	  	<p>Paragraph Text Here</p>
 		<%
-	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    Key userKey = KeyFactory.createKey("User", userName);
 	    Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
 	    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
 	    if (posts.isEmpty()) {

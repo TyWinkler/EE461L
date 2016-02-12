@@ -17,20 +17,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BlogSubmit_Servlet extends HttpServlet {
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	
+	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     	UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
     	String userName = req.getParameter("userName");
+    	
         if(user != null){
         	Key userKey = KeyFactory.createKey("User", userName);
+        	boolean subscribed = false;
 	        String content = req.getParameter("content");
 	        Date date = new Date();
-	        Entity posts = new Entity("Post", userKey);
-	        posts.setProperty("user", user);
-	        posts.setProperty("date", date);
-	        posts.setProperty("content", content);
-	        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	        datastore.put(posts);
+	        
+	        try {
+	        	datastore.get(userKey);
+	        }catch (com.google.appengine.api.datastore.EntityNotFoundException e) {
+		        Entity posts = new Entity("Post", userKey);
+		        posts.setProperty("user", user);
+		        posts.setProperty("date", date);
+		        posts.setProperty("content", content);
+	        	posts.setProperty("sub", subscribed);
+	        	datastore.put(posts);
+			}
         }
         resp.sendRedirect("/home.jsp?userName=" + userName);
     }
