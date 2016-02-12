@@ -30,8 +30,8 @@
     %>
     
   <ul class="border">
-		<li class="topbar"><a href="sign">Home</a></li>
-		<li class="topbar"><a>Posts</a></li>
+		<li class="topbar"><a href="home.jsp">Home</a></li>
+		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>
 		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
@@ -53,8 +53,6 @@
   
   <body>
 	<div id="page-wrap">
-	  	<h1>Title!!!</h1>
-	  	<p>Paragraph Text Here</p>
 		<%
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Key userKey = KeyFactory.createKey("User", userName);

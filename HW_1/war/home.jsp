@@ -27,8 +27,8 @@
     %>
     
   <ul class="border">
-		<li class="topbar"><a>Home</a></li>
-		<li class="topbar"><a href="Posts">Posts</a></li>
+		<li class="topbar"><a href="home.jsp">Home</a></li>
+		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>
 		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
