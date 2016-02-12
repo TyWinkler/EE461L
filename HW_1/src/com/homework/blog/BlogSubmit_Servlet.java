@@ -29,12 +29,10 @@ public class BlogSubmit_Servlet extends HttpServlet {
         
         if(user != null){
         	
-        	//Need to check, just concept code currently
-        	/*userName = req.getParameter("userName");
+        	userName = req.getParameter("userName");
 	        String content = req.getParameter("content");
 	        
-	        Post newPost = new Post(user,content);
-	        newPost.addPost(newPost);*/
+	        Date date = new Date();
 	        
 	        Entity posts = new Entity("Post", userKey);
 	        posts.setProperty("user", user);
@@ -48,7 +46,6 @@ public class BlogSubmit_Servlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		
-    	//Currently the datastore service is dependent on the userName, and the userName changes. This messes up going back to the home page
     	resp.sendRedirect("/home.jsp?userName=" + userName);
 	}
 }
