@@ -18,14 +18,19 @@
   </head>
   	<%
     String userName = request.getParameter("userName");
+  	boolean subscribed;
     if (userName == null) {
     	userName = "default";
     }
     pageContext.setAttribute("userName", userName);
     UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
+    User user = userService.getCurrentUser();  
     
-    boolean subscribe = false;
+    if (com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)){
+    	subscribed = true;
+    } else {
+    	subscribed = false;
+    }
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key userKey = KeyFactory.createKey("User", userName);
@@ -33,28 +38,27 @@
     
   <ul class="border">
 		<li class="topbar"><a href="home.jsp">Home</a></li>
-		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>
-		
-		<%
-		if(subscribe == false) {
-			%>
-			<li class="topbar"><a>Subscribe</a></li>
-			<%
-		}
-		else {
-			%>
-			<li class="topbar"><a>UnSubscribe</a></li>
-			<%
-		}
-		%>
-		
+		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>		
 		<ul style="float:right; list-style-type:none;">
+			<li class="topbar">
+				<%
+				if (!subscribed) {
+					%>
+					<a href="home.jsp" onclick="<%=com.homework.blog.Cron_Servlet.subscribedUsers.add(user)%>">Subscribe</a>
+					<%
+	    		} else {
+					%>
+					<a href="home.jsp" onclick="<%=com.homework.blog.Cron_Servlet.subscribedUsers.remove(user)%>">Unsubscribe</a>
+					<%
+	    		}
+				%>
+			</li>
 			<li class="topbar">
 				<%
 				if (user != null) {
 					pageContext.setAttribute("user", user);
 					%>
-					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>"> Sign out</a>
+					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Sign out</a>
 					<%
 	    		} else {
 					%>

@@ -8,10 +8,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-
 import java.io.IOException;
 import java.util.Date;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,10 +22,10 @@ public class BlogSubmit_Servlet extends HttpServlet {
     	UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
     	String userName = req.getParameter("userName");
+    	boolean subscribed = false;
     	
         if(user != null){
         	Key userKey = KeyFactory.createKey("User", userName);
-        	boolean subscribed = false;
 	        String content = req.getParameter("content");
 	        Date date = new Date();
 	        
@@ -42,6 +40,6 @@ public class BlogSubmit_Servlet extends HttpServlet {
 	        	datastore.put(posts);
 			}
         }
-        resp.sendRedirect("/home.jsp?userName=" + userName);
+        resp.sendRedirect("/home.jsp?userName=" + userName + "?subscribed=" + Boolean.toString(subscribed));
     }
 }
