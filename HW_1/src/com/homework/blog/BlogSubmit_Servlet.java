@@ -40,6 +40,6 @@ public class BlogSubmit_Servlet extends HttpServlet {
 	        	datastore.put(posts);
 			}
         }
-        resp.sendRedirect("/home.jsp?userName=" + userName + "?subscribed=" + Boolean.toString(subscribed));
+        resp.sendRedirect("/home.jsp?userName=" + userName);
     }
 }

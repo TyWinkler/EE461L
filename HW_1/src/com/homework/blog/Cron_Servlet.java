@@ -6,12 +6,13 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /**Used for accessing the page that has all posts on it**/
 
@@ -21,8 +22,26 @@ public class Cron_Servlet extends HttpServlet {
 	
 	public static ArrayList<User> subscribedUsers = new ArrayList<User>();
 	
+	public static void addUser(User user){
+		subscribedUsers.add(user);
+	}
+	
+	public static void removeUser(User user){
+		subscribedUsers.remove(user);
+	}
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String userName = req.getParameter("userName");
+		
+		if (subscribedUsers.contains(user)){
+			removeUser(user);
+		} else {
+			addUser(user);
+		}
 		
 		/**Need to get all of the emails**/
 		String to = "abcd@gmail.com";
@@ -63,5 +82,7 @@ public class Cron_Servlet extends HttpServlet {
 	      }catch (MessagingException mex) {
 	         mex.printStackTrace();
 	      }   
+		
+		resp.sendRedirect("/home.jsp?userName=" + userName);
 	}
 }

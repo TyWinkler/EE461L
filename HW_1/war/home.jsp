@@ -1,3 +1,4 @@
+<%@page import="com.homework.blog.Cron_Servlet"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.google.appengine.api.users.User" %>
@@ -10,6 +11,7 @@
 <%@ page import="com.google.appengine.api.datastore.FetchOptions" %>
 <%@ page import="com.google.appengine.api.datastore.Key" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
@@ -25,7 +27,6 @@
     pageContext.setAttribute("userName", userName);
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();  
-    
     if (com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)){
     	subscribed = true;
     } else {
@@ -34,23 +35,27 @@
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key userKey = KeyFactory.createKey("User", userName);
-    %>
     
+    System.out.println(com.homework.blog.Cron_Servlet.subscribedUsers);
+    %>
+   
   <ul class="border">
 		<li class="topbar"><a href="home.jsp">Home</a></li>
 		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
 				<%
-				if (!subscribed) {
-					%>
-					<a href="home.jsp" onclick="<%=com.homework.blog.Cron_Servlet.subscribedUsers.add(user)%>">Subscribe</a>
-					<%
-	    		} else {
-					%>
-					<a href="home.jsp" onclick="<%=com.homework.blog.Cron_Servlet.subscribedUsers.remove(user)%>">Unsubscribe</a>
-					<%
-	    		}
+				if (user != null) {
+					if (!subscribed) {
+						%>
+						<a href="/cronjob">Subscribe</a>
+						<%
+		    		} else {
+						%>
+						<a href="home.jsp" onclick="com.homework.blog.Cron_Servlet.subscribedUsers.remove(user)">Unsubscribe</a>
+						<%
+		    		}
+				}
 				%>
 			</li>
 			<li class="topbar">
