@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
   <cron>
-    <url>/cron/dailyreport</url>
+    <url>/cronjob</url>
     <description>Mail out a daily report</description>
     <schedule>every day 09:30</schedule>
     <timezone>America/Chicago</timezone>

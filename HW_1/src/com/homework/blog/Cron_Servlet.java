@@ -43,9 +43,6 @@ public class Cron_Servlet extends HttpServlet {
 			addUser(user);
 		}
 		
-		/**Need to get all of the emails**/
-		String to = "abcd@gmail.com";
-		 
 		// Sender's email ID needs to be mentioned
 	    String from = "web@gmail.com";
 
@@ -60,29 +57,37 @@ public class Cron_Servlet extends HttpServlet {
 	      
 		Session session = Session.getDefaultInstance(properties);
 		
-		try{
-	         // Create a default MimeMessage object.
-	         MimeMessage message = new MimeMessage(session);
+		
+		for(int index = 0; index < subscribedUsers.size(); index += 1) {
+			
+			/**Need to get all of the emails**/
+			String to = "Check";//subscribedUsers.get(index).getEmail();
+			
+			try{
+		         // Create a default MimeMessage object.
+		         MimeMessage message = new MimeMessage(session);
 
-	         // Set From: header field of the header.
-	         message.setFrom(new InternetAddress(from));
+		         // Set From: header field of the header.
+		         message.setFrom(new InternetAddress(from));
 
-	         // Set To: header field of the header.
-	         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		         // Set To: header field of the header.
+		         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
-	         // Set Subject: header field
-	         message.setSubject("This is the Subject Line!");
+		         // Set Subject: header field
+		         message.setSubject("Blog Update!");
 
-	         // Now set the actual message
-	         message.setText("This is actual message");
+		         // Now set the actual message
+		         message.setText("This is actual message");
 
-	         // Send message
-	         Transport.send(message);
-	         
-	      }catch (MessagingException mex) {
-	         mex.printStackTrace();
-	      }   
+		         // Send message
+		         Transport.send(message);
+		         
+		      }catch (MessagingException mex) {
+		         mex.printStackTrace();
+		      }
+		}   
 		
 		resp.sendRedirect("/home.jsp?userName=" + userName);
 	}
 }
+

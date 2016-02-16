@@ -1,6 +1,6 @@
-<%@page import="com.homework.blog.Cron_Servlet"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
@@ -11,7 +11,6 @@
 <%@ page import="com.google.appengine.api.datastore.FetchOptions" %>
 <%@ page import="com.google.appengine.api.datastore.Key" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
@@ -19,29 +18,41 @@
   	<link rel="stylesheet" href="resources/css/index.css">
   </head>
   	<%
+  	UserService userService = UserServiceFactory.getUserService();
+    User user = userService.getCurrentUser();
+  	
     String userName = request.getParameter("userName");
     if (userName == null) {
     	userName = "default";
     }
     pageContext.setAttribute("userName", userName);
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();  
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key userKey = KeyFactory.createKey("User", userName);
+    Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
+    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
     
+    boolean isSubscribed;
+    
+    if (com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)){
+    	isSubscribed = true;
+    } else {
+    	isSubscribed = false;
+    }
     %>
-   
+    
   <ul class="border">
 		<li class="topbar"><a href="home.jsp">Home</a></li>
-		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>		
+		<li class="topbar"><a href="allPosts.jsp">Posts</a></li>
+		
+		
 		<ul style="float:right; list-style-type:none;">
 			<li class="topbar">
 				<%
 				if (user != null) {
 					pageContext.setAttribute("user", user);
 					%>
-					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Sign out</a>
+					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>"> Sign out</a>
 					<%
 	    		} else {
 					%>
@@ -56,10 +67,8 @@
   <body>
 	<div id="page-wrap">
 	  	<h1>The Blog of All Blogs!!!</h1>
-	  	<p>Recent Posts:</p>
+	  	<p>Most Recent Posts:</p>
 		<%
-	    Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
-	    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
 	    if (posts.isEmpty()) {
 	        %>
 	        <p>Blog '${fn:escapeXml(userName)}' has no messages.</p>
@@ -81,14 +90,43 @@
 	        }
 	    }
 		%>
-		<div id="post-box">
-			<p class="thick">Your Message:</p>
-		    <form action="/sign" method="post">
-		      <div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
-		      <div><input type="submit" value="Post" /></div>
+		<%
+		if(user != null)
+		{
+			%>
+			<div id="post-box">
+				<p class="thick">Your Message:</p>
+		    	<form action="/sign" method="post">
+		      		<div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
+		      		<div><input type="submit" value="Post" /></div>
+		      		<input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
+		   	 	</form>
+		 	</div>
+		 <% 
+		}
+		if(user != null)
+		{
+			%>
+			<div id="post-box">
+		    <form action="/cronjob" method="get">
+		    <%
+		    if(com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)) {
+		    	%>
+		    	<div><input type="submit" value="Unsubscribe" /></div>
+		    	<%
+		    }
+		    else {
+		    	%>
+		    	<div><input type="submit" value="Subscribe" /></div>
+		    	<%
+		    }
+		    %>
 		      <input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
 		    </form>
 		 </div>
+		 <%
+		}
+		%>
 	 </div>   
   </body>
 </html>
