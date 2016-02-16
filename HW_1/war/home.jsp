@@ -108,7 +108,7 @@
 		{
 			%>
 			<div id="post-box">
-		    <form action="/cronjob" method="get">
+		    <form action="/cronjob" method="post">
 		    <%
 		    if(com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)) {
 		    	%>

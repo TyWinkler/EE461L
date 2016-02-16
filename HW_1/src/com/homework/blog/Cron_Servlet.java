@@ -29,8 +29,7 @@ public class Cron_Servlet extends HttpServlet {
 	public static void removeUser(User user){
 		subscribedUsers.remove(user);
 	}
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		
 		UserService userService = UserServiceFactory.getUserService();
@@ -42,6 +41,15 @@ public class Cron_Servlet extends HttpServlet {
 		} else {
 			addUser(user);
 		}
+		resp.sendRedirect("/home.jsp?userName=" + userName);
+	}
+	
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		String userName = req.getParameter("userName");
 		
 		// Sender's email ID needs to be mentioned
 	    String from = "web@gmail.com";
@@ -61,7 +69,7 @@ public class Cron_Servlet extends HttpServlet {
 		for(int index = 0; index < subscribedUsers.size(); index += 1) {
 			
 			/**Need to get all of the emails**/
-			String to = "Check";//subscribedUsers.get(index).getEmail();
+			String to = subscribedUsers.get(index).getEmail();
 			
 			try{
 		         // Create a default MimeMessage object.
