@@ -22,6 +22,7 @@ public class Cron_Servlet extends HttpServlet {
 	private static final Logger _logger = Logger.getLogger(Cron_Servlet.class.getName());
 	public static ArrayList<User> subscribedUsers = new ArrayList<User>();
 	public static ArrayList<String> posts = new ArrayList<String>();
+	public static ArrayList<String> users = new ArrayList<String>();
 	
 	public static void addUser(User user){
 		subscribedUsers.add(user);
@@ -70,7 +71,7 @@ public class Cron_Servlet extends HttpServlet {
 			try{
 				
 				//String htmlText;
-				String text = "This is your daily update for your Subscription to the Random Thoughts Blog: ";
+				String text = "This is your daily update for your Subscription to the Random Thoughts Blog: \n\n";
 				
 				//Multipart mp = new MimeMultipart();
 				
@@ -88,16 +89,20 @@ public class Cron_Servlet extends HttpServlet {
 
 		         
 		         int size = posts.size();
-		         _logger.info("Cron Job has been executed" + size);
-		         for(int loop = 0; loop < size; loop += 1) {
-		        	 
-		        	 text += "                                                     ";
-		        	 text += posts.get(loop);
-		        	 //MimeBodyPart htmlPart = new MimeBodyPart();
-		        	 //htmlText = " ";
-		        	 //_logger.info("Checking: " + htmlText);
-		        	 //htmlPart.setContent(htmlText, posts.get(loop));
-		        	 //mp.addBodyPart(htmlPart);
+		         if(size == 0) {
+		        	 text = "There have not been any new posts since the last update";
+		         } else {
+			         for(int loop = 0; loop < size; loop += 1) {
+			        	 text += users.get(loop);
+			        	 text += "wrote: \n";
+			        	 text += posts.get(loop);
+			        	 text += "\n";
+			        	 //MimeBodyPart htmlPart = new MimeBodyPart();
+			        	 //htmlText = " ";
+			        	 //_logger.info("Checking: " + htmlText);
+			        	 //htmlPart.setContent(htmlText, posts.get(loop));
+			        	 //mp.addBodyPart(htmlPart);
+			         }
 		         }
 		         
 		         //message.setContent(mp);
