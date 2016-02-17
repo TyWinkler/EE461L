@@ -2,25 +2,26 @@ package com.homework.blog;
 
 import java.io.IOException;
 import java.util.*;
-
+import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-/**Used for accessing the page that has all posts on it**/
-
-
 @SuppressWarnings("serial")
 public class Cron_Servlet extends HttpServlet {
-	
+	private static final Logger _logger = Logger.getLogger(Cron_Servlet.class.getName());
 	public static ArrayList<User> subscribedUsers = new ArrayList<User>();
+	public static ArrayList<String> posts = new ArrayList<String>();
 	
 	public static void addUser(User user){
 		subscribedUsers.add(user);
@@ -46,32 +47,33 @@ public class Cron_Servlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		_logger.info("Test");
 		
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
 		String userName = req.getParameter("userName");
 		
 		// Sender's email ID needs to be mentioned
-	    String from = "web@gmail.com";
+	    String from = "admin@random-thoughts8.appspotmail.com";
 
-	    // Assuming you are sending email from localhost
-	    String host = "localhost";
 
 	    // Get system properties
-	    Properties properties = System.getProperties();
-
-     	// Setup mail server
-	     properties.setProperty("mail.smtp.host", host);
-	      
-		Session session = Session.getDefaultInstance(properties);
-		
+	    Properties properties = new Properties();
+		Session session = Session.getDefaultInstance(properties,null);
 		
 		for(int index = 0; index < subscribedUsers.size(); index += 1) {
 			
 			/**Need to get all of the emails**/
 			String to = subscribedUsers.get(index).getEmail();
+			_logger.info(to);
 			
 			try{
+				
+				//String htmlText;
+				String text = "This is your daily update for your Subscription to the Random Thoughts Blog: ";
+				
+				//Multipart mp = new MimeMultipart();
+				
 		         // Create a default MimeMessage object.
 		         MimeMessage message = new MimeMessage(session);
 
@@ -84,17 +86,34 @@ public class Cron_Servlet extends HttpServlet {
 		         // Set Subject: header field
 		         message.setSubject("Blog Update!");
 
-		         // Now set the actual message
-		         message.setText("This is actual message");
-
+		         
+		         int size = posts.size();
+		         _logger.info("Cron Job has been executed" + size);
+		         for(int loop = 0; loop < size; loop += 1) {
+		        	 
+		        	 text += "                                                     ";
+		        	 text += posts.get(loop);
+		        	 //MimeBodyPart htmlPart = new MimeBodyPart();
+		        	 //htmlText = " ";
+		        	 //_logger.info("Checking: " + htmlText);
+		        	 //htmlPart.setContent(htmlText, posts.get(loop));
+		        	 //mp.addBodyPart(htmlPart);
+		         }
+		         
+		         //message.setContent(mp);
+		         //Now set the actual message
+		         message.setText(text);
+		         
 		         // Send message
 		         Transport.send(message);
+		         _logger.info("Cron Job has been executed");
 		         
-		      }catch (MessagingException mex) {
-		         mex.printStackTrace();
+		      }catch (MessagingException e) {
+		    	  _logger.info("Cron Job has NOT been executed");
+		         e.printStackTrace();
 		      }
 		}   
-		
+		posts.clear();
 		resp.sendRedirect("/home.jsp?userName=" + userName);
 	}
 }

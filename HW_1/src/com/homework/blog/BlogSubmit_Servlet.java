@@ -27,6 +27,7 @@ public class BlogSubmit_Servlet extends HttpServlet {
         if(user != null){
         	Key userKey = KeyFactory.createKey("User", userName);
 	        String content = req.getParameter("content");
+	        com.homework.blog.Cron_Servlet.posts.add(content);
 	        Date date = new Date();
 	        
 	        try {
