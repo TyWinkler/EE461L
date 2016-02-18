@@ -27,6 +27,7 @@ public class BlogSubmit_Servlet extends HttpServlet {
         if(user != null){
         	Key userKey = KeyFactory.createKey("User", userName);
 	        String content = req.getParameter("content");
+	        String title = req.getParameter("title");
 	        com.homework.blog.Cron_Servlet.posts.add(content);
 	        com.homework.blog.Cron_Servlet.users.add(user.getEmail());
 	        Date date = new Date();
@@ -38,6 +39,7 @@ public class BlogSubmit_Servlet extends HttpServlet {
 		        posts.setProperty("user", user);
 		        posts.setProperty("date", date);
 		        posts.setProperty("content", content);
+		        posts.setProperty("title", title);
 	        	posts.setProperty("sub", subscribed);
 	        	datastore.put(posts);
 			}

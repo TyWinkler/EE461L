@@ -31,6 +31,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>Cron</servlet-name>
         <url-pattern>/cronjob</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Users</servlet-name>
+        <servlet-class>com.homework.blog.UserPosts_Servlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Users</servlet-name>
+        <url-pattern>/userposts</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>

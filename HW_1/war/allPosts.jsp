@@ -40,6 +40,7 @@
 					pageContext.setAttribute("user", user);
 					%>
 					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>"> Sign out</a>
+					<a href="userPosts.jsp"> Your Posts</a>
 					<%
 	    		} else {
 					%>
@@ -53,6 +54,8 @@
   
   <body>
 	<div id="page-wrap">
+		<h1>The Blog of All Blogs!!!</h1>
+	  	<p>All posts since the beginning of time: </p>
 		<%
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    Key userKey = KeyFactory.createKey("User", userName);
@@ -66,27 +69,30 @@
 	        %>
 	        <%
 	        for (Entity post : posts) {    
-		            pageContext.setAttribute("post_content", post.getProperty("content"));
-	                pageContext.setAttribute("post_user", post.getProperty("user"));
-	                pageContext.setAttribute("post_date", post.getProperty("date"));
-	                %>
-	                <div id="post-box">
-		                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
-			            <blockquote>${fn:escapeXml(post_content)}</blockquote>
-			            <p>On: ${fn:escapeXml(post_date)}</p>
-		            </div>
-		            <%
-	        }
+	            pageContext.setAttribute("post_content", post.getProperty("content"));
+                pageContext.setAttribute("post_user", post.getProperty("user"));
+                pageContext.setAttribute("post_date", post.getProperty("date"));
+                pageContext.setAttribute("post_title", post.getProperty("title"));
+                %>
+                <div id="post-box">
+	                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
+	                <h3>${fn:escapeXml(post_title)}</h3>
+		            <blockquote>${fn:escapeXml(post_content)}</blockquote>
+		            <p>On: ${fn:escapeXml(post_date)}</p>
+	            </div>
+	            <%
+        }
 	    }
 		%>
 		<div id="post-box">
-			<p class="thick">Your Message:</p>
-		    <form action="/sign" method="post">
-		      <div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
-		      <div><input type="submit" value="Post" /></div>
-		      <input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
-		    </form>
-		 </div>
+				<p class="thick">Your Message:</p>
+		    	<form action="/sign" method="post">
+		    		<div><textarea class="title" name="title" rows="1" cols="60" placeholder="Insert title here"></textarea></div>
+		      		<div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
+		      		<div><input type="submit" value="Post" /></div>
+		      		<input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
+		   	 	</form>
+		 	</div>
 	 </div>   
   </body>
 </html>

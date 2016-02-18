@@ -94,7 +94,7 @@ public class Cron_Servlet extends HttpServlet {
 		         } else {
 			         for(int loop = 0; loop < size; loop += 1) {
 			        	 text += users.get(loop);
-			        	 text += "wrote: \n";
+			        	 text += "  wrote: \n";
 			        	 text += posts.get(loop);
 			        	 text += "\n";
 			        	 //MimeBodyPart htmlPart = new MimeBodyPart();
