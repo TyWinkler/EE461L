@@ -50,6 +50,30 @@
 				%>
 			</li>
   		</ul>
+  		<ul style="float:right; list-style-type:none;">
+  			<%
+			if(user != null)
+			{
+				%>
+			    <form action="/cronjob" method="post">
+			    <%
+			    if(com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)) {
+			    	%>
+			    	<div><input type="submit" class="submitlink" value="Unsubscribe" /></div>
+			    	<%
+			    }
+			    else {
+			    	%>
+			    	<div><input type="submit" class="submitlink" value="Subscribe" /></div>
+			    	<%
+			    }
+			    %>
+			      <input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
+			    </form>
+			 <%
+			}
+			%>
+  		</ul>
   </ul>
   
   <body>
