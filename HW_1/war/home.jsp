@@ -63,6 +63,30 @@
 				%>
 			</li>
   		</ul>
+  		<ul style="float:right; list-style-type:none;">
+  			<%
+			if(user != null)
+			{
+				%>
+			    <form action="/cronjob" method="post">
+			    <%
+			    if(com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)) {
+			    	%>
+			    	<div><input type="submit" class="submitlink" value="Unsubscribe" /></div>
+			    	<%
+			    }
+			    else {
+			    	%>
+			    	<div><input type="submit" class="submitlink" value="Subscribe" /></div>
+			    	<%
+			    }
+			    %>
+			      <input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
+			    </form>
+			 <%
+			}
+			%>
+  		</ul>
   </ul>
   
   <body>
@@ -102,33 +126,11 @@
 		    	<form action="/sign" method="post">
 		    		<div><textarea class="title" name="title" rows="1" cols="60" placeholder="Insert title here"></textarea></div>
 		      		<div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
-		      		<div><input type="submit" value="Post" /></div>
+		      		<div><input type="submit" class="original" value="Post" /></div>
 		      		<input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
 		   	 	</form>
 		 	</div>
 		 <% 
-		}
-		if(user != null)
-		{
-			%>
-			<div id="post-box">
-		    <form action="/cronjob" method="post">
-		    <%
-		    if(com.homework.blog.Cron_Servlet.subscribedUsers.contains(user)) {
-		    	%>
-		    	<div><input type="submit" value="Unsubscribe" /></div>
-		    	<%
-		    }
-		    else {
-		    	%>
-		    	<div><input type="submit" value="Subscribe" /></div>
-		    	<%
-		    }
-		    %>
-		      <input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
-		    </form>
-		 </div>
-		 <%
 		}
 		%>
 	 </div>   

@@ -70,9 +70,20 @@ textarea.title {
     margin-bottom: 20px;
 }
 
-input {
+input.original {
 	background: #4B99AD;
     padding: 8px 15px 8px 15px;
     border: none;
     color: #fff;
 }
+
+input.submitlink{
+	background-color: transparent;
+	padding-top: 16px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family:inherit;
+    font-size: inherit;
+}
+
