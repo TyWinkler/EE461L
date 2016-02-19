@@ -127,7 +127,7 @@
 					            </div>
 					            <form action="/delete" method="Post" style="padding: 20px; padding-top: 0px;">
 						      		<div><input style="margin-top: 10px;" type="submit" class="original" value="Delete" /></div>
-						      		<input type="hidden" name="deletekey" value="woot"/>
+						      		<input type="hidden" name="deletekey" value="${fn:escapeXml(post_key)}"/>
 						   	 	</form>
 				            </div>
 				        </div>

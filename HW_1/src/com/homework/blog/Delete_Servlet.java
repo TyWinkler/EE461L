@@ -19,15 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class Delete_Servlet extends HttpServlet {
-	
-	DatastoreService datastore = BlogSubmit_Servlet.datastore;
     
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Key key = (Key) req.getAttribute("deletekey");
-		String key2 = (String) req.getAttribute("deletekey");
-		System.out.println(key);
 		if(key != null){
-			datastore.delete(key);
+			BlogSubmit_Servlet.datastore.delete(key);
 		}
         resp.sendRedirect("/userPosts.jsp");
     }
