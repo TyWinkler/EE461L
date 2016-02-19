@@ -16,6 +16,8 @@
 <html>
   <head>
   	<link rel="stylesheet" href="resources/css/index.css">
+  	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   </head>
   	<%
   	UserService userService = UserServiceFactory.getUserService();
@@ -52,8 +54,18 @@
 				if (user != null) {
 					pageContext.setAttribute("user", user);
 					%>
-					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>"> Sign out</a>
-					<a href="userPosts.jsp"> Your Posts</a>
+					<a href="userPosts.jsp">Your Posts</a>
+					<%
+	    		}
+				%>
+			</li>
+			
+			<li class="topbar">
+				<%
+				if (user != null) {
+					pageContext.setAttribute("user", user);
+					%>
+					<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">Sign out</a>
 					<%
 	    		} else {
 					%>
@@ -91,7 +103,11 @@
   
   <body>
 	<div id="page-wrap">
-	  	<h1>The Blog of All Blogs!!!</h1>
+		<div class="image">
+		  	<img style="margin: 0px; opacity: 0.9;" src="/resources/images/randomthoughts8.png" height="400" width="1090">
+		  	<h1 class="title">Welcome to Random Thoughts 8!</h1>
+	  	</div>
+	  	<p>Random Thoughts 8 is a blog made by Alec Heierman & Ty Winkler for EE351K.</p>
 	  	<p>Most Recent Posts:</p>
 		<%
 	    if (posts.isEmpty()) {
@@ -100,6 +116,7 @@
 	        <%
 	    } else {
 	        %>
+	        
 	        <%
 	        for (Entity post : posts) {    
 		            pageContext.setAttribute("post_content", post.getProperty("content"));
@@ -107,11 +124,17 @@
 	                pageContext.setAttribute("post_date", post.getProperty("date"));
 	                pageContext.setAttribute("post_title", post.getProperty("title"));
 	                %>
-	                <div id="post-box">
-		                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
-		                <h3>${fn:escapeXml(post_title)}</h3>
-			            <blockquote>${fn:escapeXml(post_content)}</blockquote>
-			            <p>On: ${fn:escapeXml(post_date)}</p>
+	                <div style="padding-bottom: 20px;">
+	                <div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
+		                <header class="w3-container w3-red">
+						  <h3>${fn:escapeXml(post_title)}</h3>
+						</header>
+		                <div class="w3-container">
+			                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
+				            <blockquote>${fn:escapeXml(post_content)}</blockquote>
+				            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
+			            </div>
+		            </div>
 		            </div>
 		            <%
 	        }
@@ -121,12 +144,14 @@
 		if(user != null)
 		{
 			%>
-			<div id="post-box">
-				<p class="thick">Your Message:</p>
-		    	<form action="/sign" method="post">
+			<div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
+				<header class="w3-container w3-red">
+					<h6>Your Message:</h6>
+				</header>
+		    	<form action="/sign" method="post" style="padding: 20px;">
 		    		<div><textarea class="title" name="title" rows="1" cols="60" placeholder="Insert title here"></textarea></div>
 		      		<div><textarea name="content" rows="3" cols="60" placeholder="Type your post here"></textarea></div>
-		      		<div><input type="submit" class="original" value="Post" /></div>
+		      		<div><input style="margin-top: 10px;" type="submit" class="original" value="Post" /></div>
 		      		<input type="hidden" name="userName" value="${fn:escapeXml(userName)}"/>
 		   	 	</form>
 		 	</div>

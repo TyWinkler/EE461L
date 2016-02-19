@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class BlogSubmit_Servlet extends HttpServlet {
 	
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	public static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     	UserService userService = UserServiceFactory.getUserService();
