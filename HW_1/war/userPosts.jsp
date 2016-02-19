@@ -106,7 +106,8 @@
 	        <%
 	        int numPosts = 0;
 	        for (Entity post : posts) { 
-	        	User compare = (User)post.getProperty("user");
+	        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString())){
+		        	User compare = (User)post.getProperty("user");
 		            if(compare.equals(user)) {
 		            	pageContext.setAttribute("post_content", post.getProperty("content"));
 		                pageContext.setAttribute("post_user", post.getProperty("user"));
@@ -123,17 +124,17 @@
 					                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
 						            <blockquote>${fn:escapeXml(post_content)}</blockquote>
 						            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
-						            <p>${fn:escapeXml(post_key)}</p>
 					            </div>
 					            <form action="/delete" method="Post" style="padding: 20px; padding-top: 0px;">
 						      		<div><input style="margin-top: 10px;" type="submit" class="original" value="Delete" /></div>
-						      		<input type="hidden" name="deletekey" value="${fn:escapeXml(post_key)}"/>
+						      		<input type="hidden" name="deleteKey" value="${fn:escapeXml(post_key)}"/>
 						   	 	</form>
 				            </div>
 				        </div>
 			            <%
 			            numPosts += 1;
 		            }
+	        	}
 	        }
 	        if(numPosts == 0) {
 				%>

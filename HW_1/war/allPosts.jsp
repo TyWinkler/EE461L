@@ -104,27 +104,29 @@
 	    } else {
 	        %>
 	        <%
-	        for (Entity post : posts) {    
-	            pageContext.setAttribute("post_content", post.getProperty("content"));
-                pageContext.setAttribute("post_user", post.getProperty("user"));
-                pageContext.setAttribute("post_date", post.getProperty("date"));
-                pageContext.setAttribute("post_title", post.getProperty("title"));
-                pageContext.setAttribute("post_key", post.getKey());
-                %>
-                <div style="padding-bottom: 20px;">
-	                <div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
-		                <header class="w3-container w3-red">
-						  <h3>${fn:escapeXml(post_title)}</h3>
-						</header>
-		                <div class="w3-container">
-			                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
-				            <blockquote>${fn:escapeXml(post_content)}</blockquote>
-				            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
+	        for (Entity post : posts) {  
+	        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString())){
+		            pageContext.setAttribute("post_content", post.getProperty("content"));
+	                pageContext.setAttribute("post_user", post.getProperty("user"));
+	                pageContext.setAttribute("post_date", post.getProperty("date"));
+	                pageContext.setAttribute("post_title", post.getProperty("title"));
+	                pageContext.setAttribute("post_key", post.getKey());
+	                %>
+	                <div style="padding-bottom: 20px;">
+		                <div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
+			                <header class="w3-container w3-red">
+							  <h3>${fn:escapeXml(post_title)}</h3>
+							</header>
+			                <div class="w3-container">
+				                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
+					            <blockquote>${fn:escapeXml(post_content)}</blockquote>
+					            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
+				            </div>
 			            </div>
-		            </div>
-		        </div>
-	            <%
-        }
+			        </div>
+		            <%
+	        	}
+	        }
 	    }
 		%>
 		<div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
