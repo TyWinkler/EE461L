@@ -32,7 +32,7 @@
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Key userKey = KeyFactory.createKey("User", userName);
     Query query = new Query("Post", userKey).addSort("date", Query.SortDirection.DESCENDING);
-    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(2000));
+    List<Entity> posts = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(200));
     
     boolean isSubscribed;
     
@@ -118,32 +118,30 @@
 	        %>
 	        
 	        <%
-	        int seen = 0;
-	        while(seen < 5)
-	        {
-	        	for (Entity post : posts) {
-		        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString())){
-			            pageContext.setAttribute("post_content", post.getProperty("content"));
-		                pageContext.setAttribute("post_user", post.getProperty("user"));
-		                pageContext.setAttribute("post_date", post.getProperty("date"));
-		                pageContext.setAttribute("post_title", post.getProperty("title"));
-		                %>
-		                <div style="padding-bottom: 20px;">
-		                <div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
-			                <header class="w3-container w3-red">
-							  <h3>${fn:escapeXml(post_title)}</h3>
-							</header>
-			                <div class="w3-container">
-				                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
-					            <blockquote>${fn:escapeXml(post_content)}</blockquote>
-					            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
-				            </div>
+	        int k = 0;
+	        for (Entity post : posts) {
+	        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString()) && k<5){
+		            pageContext.setAttribute("post_content", post.getProperty("content"));
+	                pageContext.setAttribute("post_user", post.getProperty("user"));
+	                pageContext.setAttribute("post_date", post.getProperty("date"));
+	                pageContext.setAttribute("post_title", post.getProperty("title"));
+	                k++;
+	                %>
+	                <div style="padding-bottom: 20px;">
+	                <div class="w3-card-4" style="width:100%; padding-bottom: 0px;">
+		                <header class="w3-container w3-red">
+						  <h3>${fn:escapeXml(post_title)}</h3>
+						</header>
+		                <div class="w3-container">
+			                <p><b>${fn:escapeXml(post_user.nickname)}</b> wrote:</p>
+				            <blockquote>${fn:escapeXml(post_content)}</blockquote>
+				            <p style="color:grey;">On: ${fn:escapeXml(post_date)}</p>
 			            </div>
-			            </div>
-			            <%
-			            seen += 1;
-		        	}
-		        }
+		            </div>
+		            </div>
+		            <%
+		            
+	        	}
 	        }
 	    }
 		%>

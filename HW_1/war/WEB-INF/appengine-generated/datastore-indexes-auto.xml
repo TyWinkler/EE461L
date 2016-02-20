@@ -1,8 +1,8 @@
-<!-- Indices written at Fri, 19 Feb 2016 13:19:32 CST -->
+<!-- Indices written at Sat, 20 Feb 2016 12:01:37 CST -->
 
 <datastore-indexes>
 
-    <!-- Used 7 times in query history -->
+    <!-- Used 1 time in query history -->
     <datastore-index kind="Post" ancestor="true" source="auto">
         <property name="date" direction="desc"/>
     </datastore-index>
