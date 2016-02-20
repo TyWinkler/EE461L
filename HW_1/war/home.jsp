@@ -120,7 +120,7 @@
 	        <%
 	        int k = 0;
 	        for (Entity post : posts) {
-	        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString()) && k<5){
+	        	if(!com.homework.blog.Delete_Servlet.deletedPosts.contains(post.getKey().toString()) && k < 5){
 		            pageContext.setAttribute("post_content", post.getProperty("content"));
 	                pageContext.setAttribute("post_user", post.getProperty("user"));
 	                pageContext.setAttribute("post_date", post.getProperty("date"));
